@@ -35,7 +35,7 @@ module.exports = ({ app, conf }) => {
 			const res = getTemplate(path, opts.cache)(html, opts);
 			// takes (html, blocks) where again blocks are the other keys exported above, returns stream or string
 			const layout = getLayout(res.layout, opts.cache);
-			cb(null, layout(html, res));
+			cb(null, layout(html, { ...opts, ...res }));
 		}
 		catch (ex) {
 			cb(ex);

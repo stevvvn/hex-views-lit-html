@@ -1,6 +1,6 @@
 {
   "name": "hex-views-lit-html",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "repository": "https://bitbucket.org/snyder13/hex-views-lit-html",
   "author": "Steven Snyder <snyder13@purdue.edu>",
