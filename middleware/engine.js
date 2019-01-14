@@ -5,27 +5,22 @@ const fs = require('fs');
 
 module.exports = ({ app, conf }) => {
 	const layoutPath = `${ conf.get('paths.launch') }/views/layouts`;
-	const cache = { '_layouts': {} };
+	const handleCache = (path, cache) => {
+		if (cache) {
+			return path;
+		}
+		const resolved = require.resolve(path);
+		delete require.cache[resolved];
+		return resolved;
+	};
+
 	// views/x/y.js
-	const getTemplate = (path, cached) => {
-		if (cached) {
-			if (!cache[path]) {
-				cache[path] = require(path);
-			}
-			return cache[path];
-		}
-		return require(path);
-	};
+	const getTemplate = (path, cache) =>
+		require(handleCache(path, cache));
+
 	// views/layouts/x.js
-	const getLayout = (type, cached) => {
-		if (cached) {
-			if (!cache._layouts[path]) {
-				cache._layouts[path] = require(`${ layoutPath }/${ type }`);
-			}
-			return cache._layouts[path];
-		}
-		return require(`${ layoutPath }/${ type }`);
-	};
+	const getLayout = (type, cache) =>
+		require(handleCache(`${ layoutPath }/${ type }`, cache));
 
 	app.engine('js', (path, opts, cb) => {
 		try {
